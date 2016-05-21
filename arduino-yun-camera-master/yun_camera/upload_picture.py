@@ -1,7 +1,7 @@
 # coding=utf-8
-# Script to upload files to Dropbox
+# Script para importar imagens para o Dropbox
 
-# Import correct libraries
+# Importa a bibliotecas
 import base64
 import sys
 from temboo.core.session import TembooSession
@@ -9,18 +9,18 @@ from temboo.Library.Dropbox.FilesAndMetadata import UploadFile
 
 print str(sys.argv[1])
 
-# Encode image
+# Codificação da imagem
 with open(str(sys.argv[1]), "rb") as image_file:
     encoded_string = base64.b64encode(image_file.read())
 
-# Declare Temboo session and Choreo to upload files
+# Declara a sessão Temboo e Choero para envio de arquivos.
 session = TembooSession('yourSession', 'yourApp', 'yourKey')
 uploadFileChoreo = UploadFile(session)
 
-# Get an InputSet object for the choreo
+# Obtem um conjunto de objetos de entrada para o Choreo
 uploadFileInputs = uploadFileChoreo.new_input_set()
 
-# Set inputs
+# Configuração das entradas
 uploadFileInputs.set_AppSecret("yourAppSecret")
 uploadFileInputs.set_AccessToken("yourAccessToken")
 uploadFileInputs.set_FileName(str(sys.argv[1]))
@@ -29,5 +29,5 @@ uploadFileInputs.set_AppKey("yourAppKey")
 uploadFileInputs.set_FileContents(encoded_string)
 uploadFileInputs.set_Root("sandbox")
 
-# Execute choreo
+# Executa choreo
 uploadFileResults = uploadFileChoreo.execute_with_results(uploadFileInputs)
