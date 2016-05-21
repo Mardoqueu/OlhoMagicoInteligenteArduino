@@ -1,25 +1,25 @@
-// Sketch to upload pictures to Dropbox when motion is detected
+// Esboço para fazer upload de fotos para Dropbox quando detecta movimento
 #include <Bridge.h>
 #include <Process.h>
 
-// Picture process
+// Processa imagem
 Process picture;
 
-// Filename
+// Nome do Arquivo
 String filename;
 
 // Pin
 int pir_pin = 8;
 
-// Path
+// Caminho
 String path = "/mnt/sda1/";
 
 void setup() {
   
-  // Bridge
+  // Inicia a Bridge
   Bridge.begin();
   
-  // Set pin mode
+  // Aciona o modo pin
   pinMode(pir_pin,INPUT);
 }
 
@@ -28,7 +28,7 @@ void loop(void)
   
   if (digitalRead(pir_pin) == true) {
     
-    // Generate filename with timestamp
+    // Gera o nome do  arquivo com timestamp (data e hora)
     filename = "";
     picture.runShellCommand("date +%s");
     while(picture.running());
@@ -40,11 +40,11 @@ void loop(void)
     filename.trim();
     filename += ".png";
  
-    // Take picture
+    // Tira a foto
     picture.runShellCommand("fswebcam " + path + filename + " -r 1280x720");
     while(picture.running());
     
-    // Upload to Dropbox
+    // Enviar para Dropbox
     picture.runShellCommand("python " + path + "upload_picture.py " + path + filename);
     while(picture.running());
   }
